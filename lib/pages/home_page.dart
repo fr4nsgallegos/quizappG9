@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:quizappg9/quiz_brain.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  QuizBrain quizBrain = QuizBrain();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +31,7 @@ class HomePage extends StatelessWidget {
               flex: 5,
               child: Center(
                 child: Text(
-                  "¿Has almorzado hoy?",
+                  quizBrain.getQuestionText(),
                   style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
@@ -35,7 +43,11 @@ class HomePage extends StatelessWidget {
                 child: MaterialButton(
                   color: Colors.greenAccent,
                   minWidth: double.infinity,
-                  onPressed: () {},
+                  onPressed: () {
+                    quizBrain.nextQuestion();
+                    print(quizBrain.getQuestionText());
+                    setState(() {});
+                  },
                   child: Text("Verdadero"),
                 ),
               ),
