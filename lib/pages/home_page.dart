@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizappg9/quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -23,25 +24,40 @@ class _HomePageState extends State<HomePage> {
       score.add(itemScore(numberQuestion, false));
     }
     if (quizBrain.isFinished()) {
-      showDialog(
+      Alert(
           context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Alerta"),
-              content: Text("Has llegado al final del formulario"),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    score.clear();
-                    quizBrain.restartQuizz();
-                    setState(() {});
-                  },
-                  child: Text("OK"),
-                ),
-              ],
-            );
-          });
+          type: AlertType.info,
+          title: "QuizzApp",
+          desc: "El cuestionario ha llego a su fin",
+          buttons: [
+            DialogButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.pop(context);
+                  quizBrain.restartQuizz();
+                  score.clear();
+                  setState(() {});
+                })
+          ]).show();
+      // showDialog(
+      //     context: context,
+      //     builder: (BuildContext context) {
+      //       return AlertDialog(
+      //         title: Text("Alerta"),
+      //         content: Text("Has llegado al final del formulario"),
+      //         actions: [
+      //           TextButton(
+      //             onPressed: () {
+      //               Navigator.pop(context);
+      //               score.clear();
+      //               quizBrain.restartQuizz();
+      //               setState(() {});
+      //             },
+      //             child: Text("OK"),
+      //           ),
+      //         ],
+      //       );
+      //     });
     } else {
       quizBrain.nextQuestion();
     }
