@@ -22,7 +22,28 @@ class QuizBrain {
     if (questionIndex < questionList.length - 1) {
       questionIndex++;
     }
-
     // questionIndex = questionIndex + 1;
+  }
+
+  String getNumberQuestion() {
+    return (questionIndex + 1).toString();
+  }
+
+  bool isFinished() {
+    // if (questionIndex > questionList.length - 1) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+    print("---------------------------");
+    print(questionIndex);
+    print(questionList.length - 1);
+    print("---------------------------");
+
+    return questionIndex >= questionList.length - 1;
+  }
+
+  void restartQuizz() {
+    questionIndex = 0;
   }
 }

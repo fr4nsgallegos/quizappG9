@@ -8,16 +8,45 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   QuizBrain quizBrain = QuizBrain();
-  // List<Widget> score = [];
-  void checkAnswer(bool userAnswer) {
+  List<Widget> score = [];
+
+  void checkAnswer(bool userAnswer, String numberQuestion) {
+    // if (quizBrain.isFinished() == true) {
+    //   print("EL FORMULARIO HA FINALIZADO");
+    // } else {
     bool correctAnswer = quizBrain.getQuestionAnswer();
     if (correctAnswer == userAnswer) {
       print("La respuesta es correcta");
+      score.add(itemScore(numberQuestion, true));
     } else {
       print("INCORRECTO!!!");
+      score.add(itemScore(numberQuestion, false));
     }
-    quizBrain.nextQuestion();
+    if (quizBrain.isFinished()) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Alerta"),
+              content: Text("Has llegado al final del formulario"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    score.clear();
+                    quizBrain.restartQuizz();
+                    setState(() {});
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          });
+    } else {
+      quizBrain.nextQuestion();
+    }
     setState(() {});
+    // }
   }
 
   Widget itemScore(String numberQuestion, bool isCorrect) {
@@ -70,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.greenAccent,
                   minWidth: double.infinity,
                   onPressed: () {
-                    checkAnswer(true);
+                    checkAnswer(true, quizBrain.getNumberQuestion());
                   },
                   child: Text("Verdadero"),
                 ),
@@ -84,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.redAccent,
                   minWidth: double.infinity,
                   onPressed: () {
-                    checkAnswer(false);
+                    checkAnswer(false, quizBrain.getNumberQuestion());
                   },
                   child: Text("false"),
                 ),
@@ -92,11 +121,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                itemScore("1", true),
-                itemScore("2", false),
-                itemScore("3", false),
-              ],
+              children: score,
             )
           ],
         ),
