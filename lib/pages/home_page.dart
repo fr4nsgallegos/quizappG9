@@ -8,6 +8,32 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   QuizBrain quizBrain = QuizBrain();
+  // List<Widget> score = [];
+  void checkAnswer(bool userAnswer) {
+    bool correctAnswer = quizBrain.getQuestionAnswer();
+    if (correctAnswer == userAnswer) {
+      print("La respuesta es correcta");
+    } else {
+      print("INCORRECTO!!!");
+    }
+    quizBrain.nextQuestion();
+    setState(() {});
+  }
+
+  Widget itemScore(String numberQuestion, bool isCorrect) {
+    return Row(
+      children: [
+        Text(
+          numberQuestion,
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
+        Icon(
+          isCorrect ? Icons.check : Icons.close,
+          color: isCorrect ? Colors.greenAccent : Colors.redAccent,
+        )
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +70,7 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.greenAccent,
                   minWidth: double.infinity,
                   onPressed: () {
-                    quizBrain.nextQuestion();
-                    print(quizBrain.getQuestionText());
-                    setState(() {});
+                    checkAnswer(true);
                   },
                   child: Text("Verdadero"),
                 ),
@@ -59,11 +83,21 @@ class _HomePageState extends State<HomePage> {
                 child: MaterialButton(
                   color: Colors.redAccent,
                   minWidth: double.infinity,
-                  onPressed: () {},
+                  onPressed: () {
+                    checkAnswer(false);
+                  },
                   child: Text("false"),
                 ),
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                itemScore("1", true),
+                itemScore("2", false),
+                itemScore("3", false),
+              ],
+            )
           ],
         ),
       ),
